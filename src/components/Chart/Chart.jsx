@@ -66,7 +66,7 @@ const CustomTooltip = (props, typeTemp, dataBase) => {
 
   return (
     <div className={classes.tooltip}>
-      <p>{`${_date.date}-го числа в ${_date.time} будет ± ${
+      <p>{`${_date.date}-го числа в ${_date.time} будет ±${
         data.y
       }${typeTemp.slice(typeTemp.indexOf("_") + 1)}`}</p>
       {weatherType && (
