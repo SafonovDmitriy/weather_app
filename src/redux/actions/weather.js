@@ -72,6 +72,21 @@ export const getWeather = (coord) => async (dispatch) => {
     console.log(`error`, error);
   }
   try {
+    const { data } = await openWeatherMap(coord);
+    const openweathermap = data.list.map((item) => ({
+      date: getDate(item.dt_txt),
+      weatherType: {
+        title: item.weather[0].description,
+        icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`,
+      },
+      ...parseCtoAllTemp(item.main.temp - 273.15),
+    }));
+    dispatch(setWeather({ openweathermap }));
+  } catch (error) {
+    console.log(`error`, error);
+  }
+
+  try {
     const { data } = await aerisweather(coord);
     const { periods } = data.response[0];
 
@@ -91,20 +106,6 @@ export const getWeather = (coord) => async (dispatch) => {
     }, []);
 
     dispatch(setWeather({ aerisweather: _list }));
-  } catch (error) {
-    console.log(`error`, error);
-  }
-  try {
-    const { data } = await openWeatherMap(coord);
-    const openweathermap = data.list.map((item) => ({
-      date: getDate(item.dt_txt),
-      weatherType: {
-        title: item.weather[0].description,
-        icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`,
-      },
-      ...parseCtoAllTemp(item.main.temp - 273.15),
-    }));
-    dispatch(setWeather({ openweathermap }));
   } catch (error) {
     console.log(`error`, error);
   }
