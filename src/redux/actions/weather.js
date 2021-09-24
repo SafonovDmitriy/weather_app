@@ -3,6 +3,7 @@ import {
   openWeatherMap,
   visualCrossing,
   weatherapi,
+  weatherbit,
 } from "../../api/httpService";
 import { temp_C, temp_F, temp_K } from "../../utils/typeOfTemperature";
 import { SET_WEATHER_DATA } from "../actionTypes";
@@ -108,21 +109,21 @@ export const getWeather = (coord) => async (dispatch) => {
     console.log(`error`, error);
   }
 
-  // try {
-  //   const { data } = await weatherbit(coord);
+  try {
+    const { data } = await weatherbit(coord);
 
-  //   const _list = data.data.reduce((acc, item) => {
-  //     acc.push({
-  //       date: getDate(item.timestamp_local),
-  //       ...parseCtoAllTemp(item.temp),
-  //     });
+    const _list = data.data.reduce((acc, item) => {
+      acc.push({
+        date: getDate(item.timestamp_local),
+        ...parseCtoAllTemp(item.temp),
+      });
 
-  //     return acc;
-  //   }, []);
-  //   dispatch(setWeather({ weatherbit: _list }));
-  // } catch (error) {
-  //   console.log(`error`, error);
-  // }
+      return acc;
+    }, []);
+    dispatch(setWeather({ weatherbit: _list }));
+  } catch (error) {
+    console.log(`error`, error);
+  }
   try {
     const { data } = await visualCrossing(coord);
     const locations =
